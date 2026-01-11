@@ -1,29 +1,110 @@
 using RandomToolOrder;
 using System.Drawing;
+using System.Linq;
 using System.Reflection;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using System.Text.RegularExpressions;
 
 bool DEBUG = false;
 
+string[] Progs = { "early", "dash", "cloak", "walljump", "widow", "act2", "clawline", "faydown", "act3" };
+int MaxProgIndex = 7;
+string[] DefExclu = { "long"}; //things with these "colors" won't be included.
+
+foreach (string arg in args)
+{
+	string[] argSplit = arg.Split('=');
+	
+	if (argSplit[0] == "e") //exclusions
+	{
+		DefExclu = argSplit[1].Split(",");
+	}
+    else if (argSplit[0] == "max")
+	{
+		MaxProgIndex = Array.IndexOf(Progs, argSplit[1]);
+	}
+    else if (argSplit[0] == "h" || argSplit[0] == "help")
+    {
+        Console.WriteLine("Use e=$COMMASEPLIST for exclusions, and/or max=$MAXPROG.");
+        return 1;
+    }
+}
+
+
 while (true)
 {
-	var tools = LoadTools().ToList();
+	List<Tool> tools = LoadTools().ToList();
+
+	//get counts of each progression type
+	Dictionary<string, List<Tool>> progSplit = new Dictionary<string, List<Tool>>();
+	foreach (string progString in Progs)
+	{
+		progSplit.Add(progString, new List<Tool>());
+	}
+    foreach (Tool tool in tools)
+	{
+		bool skip = false;
+		foreach (string tag in tool.Tags)
+		{
+			if (DefExclu.Contains(tag)) {  skip = true; }
+		}
+		if (!skip && !DefExclu.Contains(tool.Color))
+		{
+			//silkshot needs special attention
+			if (tool.Name == "Silkshot")
+			{
+				string[] silkNames = ["Silkshot Weaver", "Silkshot Architect", "Silkshot Forge"];
+				string[] progTypes = ["faydown", "clawline", "widow"];
+				Random rng = new Random();
+				int index = rng.Next(3);
+				tool.Name = silkNames[index];
+				progSplit[progTypes[index]].Add(tool);
+			}
+			progSplit[tool.Prog].Add(tool);
+		}
+	}
 
 	const int batchSize = 1000;
 	int attempts = 0;
 	bool valid = false;
+	List<Tool> RTO = new List<Tool>();
 
-	while (attempts < batchSize)
+
+    while (attempts < batchSize)
 	{
-		Shuffle(tools);
-		if (IsValidOrder(tools))
+		RTO = Shuffle(progSplit, Progs, MaxProgIndex);
+		if (IsValidOrder(RTO))
 		{
 			valid = true;
 			break;
 		}
-		attempts++;
+
+        //reset tool dic
+        progSplit = new Dictionary<string, List<Tool>>();
+        foreach (string progString in Progs)
+        {
+            progSplit.Add(progString, new List<Tool>());
+        }
+        foreach (Tool tool in tools)
+        {
+            if (!DefExclu.Contains(tool.Color))
+            {
+                //silkshot needs special attention
+                if (tool.Name == "Silkshot")
+                {
+                    string[] silkNames = ["Silkshot Weaver", "Silkshot Architect", "Silkshot Forge"];
+                    string[] progTypes = ["faydown", "clawline", "widow"];
+                    Random rng = new Random();
+                    int index = rng.Next(3);
+                    tool.Name = silkNames[index];
+                    progSplit[progTypes[index]].Add(tool);
+                }
+                progSplit[tool.Prog].Add(tool);
+            }
+        }
+        attempts++;
 	}
 
 	if (!valid)
@@ -32,15 +113,15 @@ while (true)
 		return Exit(1, DEBUG);
 	}
 
-	var content = BuildRTOContent(tools);
-	PrintPrerequisites(tools);
+	var content = BuildRTOContent(RTO);
+	PrintPrerequisites(RTO);
 
 	if (!DEBUG)
 	{
 		try
 		{
-			File.WriteAllText(Path.Combine(Directory.GetCurrentDirectory(), $"rto-{tools.First().Name.Replace("'", string.Empty).Replace(' ', '-')}.lss"), content);
-			Console.WriteLine($"\nWritten: {Path.Combine(Directory.GetCurrentDirectory(), $"rto-{tools.First().Name.Replace("'", string.Empty).Replace(' ', '-')}.lss")}");
+			File.WriteAllText(Path.Combine(Directory.GetCurrentDirectory(), $"rto-{RTO.First().Name.Replace("'", string.Empty).Replace(' ', '-')}.lss"), content);
+			Console.WriteLine($"\nWritten: {Path.Combine(Directory.GetCurrentDirectory(), $"rto-{RTO.First().Name.Replace("'", string.Empty).Replace(' ', '-')}.lss")}");
 		}
 		catch (Exception ex)
 		{
@@ -50,7 +131,7 @@ while (true)
 	}
 	else
 	{
-		Console.WriteLine($"\nTotal cost: {tools.Where(t => t.Cost.HasValue).Sum(t => t.Cost!.Value)} Rosaries");
+		Console.WriteLine($"\nTotal cost: {RTO.Where(t => t.Cost.HasValue).Sum(t => t.Cost!.Value)} Rosaries");
 	}
 
 	var exit = Exit(0, DEBUG);
@@ -119,14 +200,27 @@ static bool IsValidOrder(IList<Tool> ordered)
 	return result;
 }
 
-static void Shuffle<T>(IList<T> list)
+static List<Tool> Shuffle(Dictionary<string,List<Tool>> progDic, string[] progNames, int MaxProgIndex = 7)
 {
-	var rng = new Random();
-	for (int i = list.Count - 1; i > 0; i--)
+	//MaxProgIndex 8 includes act 3; 7 is faydown
+    int mix = 5; //under this amount, pool will be mixed into the next progression
+	//don't you just love magic numbers
+	List<Tool> outList = new List<Tool>();
+    var rng = new Random();
+    for (int CurProgIndex = 0; CurProgIndex <= MaxProgIndex; CurProgIndex++)
 	{
-		int j = rng.Next(i + 1);
-		(list[i], list[j]) = (list[j], list[i]);
+		while (progDic[progNames[CurProgIndex]].Count > mix || (CurProgIndex == MaxProgIndex && progDic[progNames[CurProgIndex]].Count > 0))
+		{
+			int randToolIndex = rng.Next(progDic[progNames[CurProgIndex]].Count);
+			outList.Add(progDic[progNames[CurProgIndex]][randToolIndex]);
+			progDic[progNames[CurProgIndex]].RemoveAt(randToolIndex);
+        }
+		if (CurProgIndex < MaxProgIndex)
+		{
+			progDic[progNames[CurProgIndex + 1]].AddRange(progDic[progNames[CurProgIndex]]);
+        }
 	}
+	return outList;
 }
 
 static string Color(string? color = null)
@@ -139,6 +233,8 @@ static string Color(string? color = null)
 		"red" => "91",
 		"blue" => "94",
 		"yellow" => "93",
+		"crest" => "92",
+		"skill" => "96",
 		_ => "39",
 	} + "m";
 }
@@ -208,11 +304,20 @@ static string BuildRTOContent(IList<Tool> ordered)
 
 	for (var i = 0; i < ordered.Count; i++)
 	{
-		sb.AppendLine("\t\t\t\t<Setting type=\"string\" value=\"ManualSplit\"></Setting>");
+		Tool tool = ordered[i];
+		sb.AppendLine($"\t\t\t\t<Setting type=\"string\" value=\"{tool.NameFormat()}\"></Setting>");
 	}
 
 	sb.AppendLine("\t\t\t</Setting>");
-	sb.AppendLine("\t\t</CustomSettings>");
+	sb.AppendLine("\t\t\t<Setting id=\"hit_counter\" type=\"bool\">False</Setting>");
+    sb.AppendLine("\t\t\t<Setting id=\"splits_insert_0\" type=\"bool\">False</Setting>");
+	for (var i = 0; i < ordered.Count; i++)
+	{
+        Tool tool = ordered[i];
+		sb.AppendLine($"\t\t\t<Setting id=\"splits_{i+1}_item\" type=\"string\" value=\"{tool.NameFormat()}\" />");
+        sb.AppendLine("\t\t\t<Setting id=\"splits_1_action\" type=\"string\" value=\"None\" />");
+    }
+    sb.AppendLine("\t\t</CustomSettings>");
 	sb.AppendLine("\t</AutoSplitterSettings>");
 
 	sb.AppendLine("</Run>");
@@ -344,7 +449,7 @@ static int Exit(int code, bool debug)
 
 namespace RandomToolOrder
 {
-	public static class JsonOptions
+    public static class JsonOptions
 	{
 		public static readonly JsonSerializerOptions Options;
 
@@ -357,11 +462,19 @@ namespace RandomToolOrder
 
 	public class Tool
 	{
-		public string Name { get; set; } = string.Empty;
+        public string Name { get; set; } = string.Empty;
 		public string Color { get; set; } = string.Empty;
 		public List<List<List<string>>>? Prerequisites { get; set; }
 		public int? Cost { get; set; }
-	}
+		public string Prog { get; set; } = string.Empty;
+		public List<string> Tags { get; set; } = new();
+
+        private static readonly Regex sWhitespace = new Regex(@"[^a-zA-Z0-9]+"); 
+        public string NameFormat() //remove everything that isn't a letter
+        {
+            return sWhitespace.Replace(this.Name, "");
+        }
+    }
 
 	public class PrerequisitesConverter : JsonConverter<List<List<List<string>>>?>
 	{
@@ -422,5 +535,5 @@ namespace RandomToolOrder
 		{
 
 		}
-	}
+    }
 }
