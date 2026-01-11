@@ -1,175 +1,222 @@
 [
 	{
 		"name": "Straight Pin",
-		"color": "red"
+		"color": "red",
+		"prog": "early"
 	},
 	{
 		"name": "Threefold Pin",
-		"color": "red"
+		"color": "red",
+		"prog": "dash"
 	},
 	{
 		"name": "Sting Shard",
 		"color": "red",
-		"cost": 140
+		"cost": 140,
+		"tags": [ "craft" ],
+		"prog": "early"
+
 	},
 	{
 		"name": "Tacks",
-		"color": "red"
+		"color": "red",
+		"prog": "widow"
 	},
 	{
 		"name": "Longpin",
-		"color": "red"
+		"color": "red",
+		"prog": "dash"
 	},
 	{
 		"name": "Curveclaw",
 		"color": "red",
-		"cost": 140
+		"cost": 140,
+		"prog": "dash"
 	},
 	{
 		"name": "Curvesickle",
 		"color": "red",
-		"prerequisites": [ "Curveclaw", "Throwing Ring", "Snare Setter" ]
+		"prerequisites": [ "Curveclaw", "Throwing Ring", "Snare Setter" ],
+		"prog": "act3"
 	},
 	{
 		"name": "Throwing Ring",
-		"color": "red"
+		"color": "red",
+		"prog": "faydown",
+		"tags": [ "quest", "long" ]
 	},
 	{
 		"name": "Pimpillo",
-		"color": "red"
+		"color": "red",
+		"tags": [ "craft" ],
+		"prog": "walljump"
+
 	},
 	{
 		"name": "Conchcutter",
-		"color": "red"
+		"color": "red",
+		"prog": "faydown"
 	},
 	{
 		"name": "Silkshot",
-		"color": "red"
+		"color": "red",
+		"tags": [ "craft" ],
+		"prog": "widow"
 	},
 	{
 		"name": "Delver's Drill",
-		"color": "red"
+		"color": "red",
+		"prog": "act2"
 	},
 	{
 		"name": "Cogwork Wheel",
 		"color": "red",
-		"cost": 360
+		"cost": 360,
+		"tags": [ "craft" ],
+		"prog": "clawline"
 	},
 	{
 		"name": "Cogfly",
-		"color": "red"
+		"color": "red",
+		"tags": [ "craft" ],
+		"prog": "clawline"
 	},
 	{
 		"name": "Rosary Cannon",
-		"color": "red"
+		"color": "red",
+		"prog": "clawline"
 	},
 	{
 		"name": "Voltvessels",
-		"color": "red"
+		"color": "red",
+		"prog": "faydown"
 	},
 	{
 		"name": "Flintslate",
-		"color": "red"
+		"color": "red",
+		"prog": "dash"
 	},
 	{
 		"name": "Snare Setter",
-		"color": "red"
+		"color": "red",
+		"prog": "faydown"
 	},
 	{
 		"name": "Flea Brew",
-		"color": "red"
+		"color": "red",
+		"prog": "dash"
 	},
 	{
 		"name": "Plasmium Phial",
 		"color": "red",
-		"prerequisites": [ "Needle Phial" ]
-	},
-	{
-		"name": "Needle Phial",
-		"color": "red"
+		"prog": "walljump"
 	},
 
 	{
 		"name": "Druid's Eye",
-		"color": "blue"
+		"color": "blue",
+		"prog": "early"
 	},
 	{
 		"name": "Druid's Eyes",
 		"color": "blue",
-		"prerequisites": [ "Druid's Eye" ]
+		"prerequisites": [ "Druid's Eye" ],
+		"prog": "faydown"
 	},
 	{
 		"name": "Magma Bell",
 		"color": "blue",
-		"cost": 110
+		"cost": 110,
+		"tags": [ "craft" ],
+		"prog": "early"
 	},
 	{
 		"name": "Warding Bell",
-		"color": "blue"
+		"color": "blue",
+		"prog": "dash"
 	},
 	{
 		"name": "Pollip Pouch",
-		"color": "blue"
+		"color": "blue",
+		"prog": "walljump"
 	},
 	{
 		"name": "Fractured Mask",
-		"color": "blue"
+		"color": "blue",
+		"cost": 260,
+		"prog": "dash"
 	},
 	{
 		"name": "Multibinder",
-		"color": "blue"
+		"color": "blue",
+		"cost": 880,
+		"prog": "widow"
 	},
 	{
 		"name": "Weavelight",
-		"color": "blue"
+		"color": "blue",
+		"prog": "widow"
 	},
 	{
 		"name": "Sawtooth Circlet",
 		"color": "blue",
-		"cost": 230
+		"cost": 230,
+		"tags": [ "craft" ],
+		"prog": "clawline"
 	},
 	{
 		"name": "Injector Band",
-		"color": "blue"
+		"color": "blue",
+		"prog": "act2"
 	},
 	{
 		"name": "Spool Extender",
 		"color": "blue",
-		"cost": 720
+		"cost": 720,
+		"prog": "act2"
 	},
 	{
 		"name": "Reserve Bind",
-		"color": "blue"
+		"color": "blue",
+		"prog": "faydown",
+		"tags": ["quest"]
 	},
 	{
 		"name": "Claw Mirror",
-		"color": "blue"
+		"color": "blue",
+		"prog": "act2"
 	},
 	{
 		"name": "Dark Mirror",
 		"color": "blue",
-		"prerequisites": [ "Claw Mirror", "Throwing Ring", "Snare Setter" ]
+		"prerequisites": [ "Claw Mirror", "Throwing Ring", "Snare Setter" ],
+		"prog": "act3"
 	},
 	{
 		"name": "Memory Crystal",
-		"color": "blue"
+		"color": "blue",
+		"prog": "clawline"
 	},
 	{
 		"name": "Snitch Pick",
 		"color": "blue",
-		"cost": 740
+		"cost": 740,
+		"prog": "faydown"
 	},
 	{
 		"name": "Volt Filament",
-		"color": "blue"
+		"color": "blue",
+		"prog": "faydown"
 	},
 	{
 		"name": "Quick Sling",
-		"color": "blue"
+		"color": "blue",
+		"prog": "faydown"
 	},
 	{
 		"name": "Wreath of Purity",
-		"color": "blue"
+		"color": "blue",
+		"prog": "faydown"
 	},
 	{
 		"name": "Longclaw",
@@ -177,79 +224,160 @@
 		"prerequisites": [
 			[
 				"Sting Shard",
-				"Longpin",
-				[ "Needle Phial", "!Plasmium Phial" ]
-			]
-		]
+				"Longpin"
+			],
+			[
+				"Flintslate",
+				"Pimpillo",
+				"Wispfire Lantern",
+				"Voltvessels",
+				"Volt Filament"
+			],
+			[ "Sawtooth Circlet", "Cogwork Wheel", "Delver's Drill", "Conchcutter", "Beast Crest", "Architect Crest" ]
+		],
+		"prog": "faydown",
+		"tags": [ "quest" ]
 	},
 	{
 		"name": "Wispfire Lantern",
-		"color": "blue"
+		"color": "blue",
+		"prog": "faydown"
 	},
 	{
 		"name": "Egg of Flealia",
-		"color": "blue"
+		"color": "blue",
+		"prog": "faydown",
+		"tags": ["quest", "long"]
 	},
 	{
 		"name": "Pin Badge",
 		"color": "blue",
-		"prerequisites": [ "Throwing Ring", "Snare Setter" ]
+		"prerequisites": [ "Throwing Ring", "Snare Setter" ],
+		"prog": "act3"
 	},
 
 	{
 		"name": "Compass",
 		"color": "yellow",
-		"cost": 70
+		"cost": 70,
+		"prog": "early"
 	},
 	{
 		"name": "Shard Pendant",
-		"color": "yellow"
+		"color": "yellow",
+		"prog": "early"
 	},
 	{
 		"name": "Magnetite Brooch",
 		"color": "yellow",
-		"cost": 220
+		"cost": 120,
+		"prog": "early"
 	},
 	{
 		"name": "Weighted Belt",
 		"color": "yellow",
-		"cost": 160
+		"cost": 160,
+		"prog": "dash"
 	},
 	{
 		"name": "Barbed Bracelet",
-		"color": "yellow"
+		"color": "yellow",
+		"prog": "walljump"
 	},
 	{
 		"name": "Dead Bug's Purse",
-		"color": "yellow"
+		"color": "yellow",
+		"prog": "dash"
 	},
 	{
 		"name": "Magnetite Dice",
 		"color": "yellow",
-		"cost": 300
+		"cost": 300,
+		"prog": "walljump"
 	},
 	{
 		"name": "Scuttlebrace",
 		"color": "yellow",
-		"cost": 140
+		"cost": 140,
+		"tags": [ "craft" ],
+		"prog": "clawline"
 	},
 	{
 		"name": "Ascendant's Grip",
 		"color": "yellow",
-		"cost": 350
+		"cost": 350,
+		"prog": "act2"
 	},
 	{
 		"name": "Spider Strings",
 		"color": "yellow",
-		"cost": 320
+		"cost": 320,
+		"prog": "faydown"
 	},
 	{
 		"name": "Silkspeed Anklets",
-		"color": "yellow"
+		"color": "yellow",
+		"prog": "widow"
 	},
 	{
 		"name": "Thief's Mark",
 		"color": "yellow",
-		"cost": 350
+		"cost": 350,
+		"prog": "faydown"
+	},
+	{
+		"name": "Wanderer Crest",
+		"color": "crest",
+		"prog": "dash"
+	},
+	{
+		"name": "Reaper Crest",
+		"color": "crest",
+		"prog": "dash"
+	},
+	{
+		"name": "Hunter Crest Evo 1",
+		"color": "crest",
+		"prog": "widow"
+	},
+	{
+		"name": "Beast Crest",
+		"color": "crest",
+		"prog": "walljump"
+	},
+	{
+		"name": "Architect Crest",
+		"color": "crest",
+		"prog": "clawline"
+	},
+	{
+		"name": "Shaman Crest",
+		"color": "crest",
+		"prog": "act3"
+	},
+	{
+		"name": "Thread Storm",
+		"color": "skill",
+		"prog": "dash"
+	},
+	{
+		"name": "Cross Stitch",
+		"color": "skill",
+		"prog": "widow"
+	},
+	{
+		"name": "Sharpdart",
+		"color": "skill",
+		"prog": "widow"
+	},
+	{
+		"name": "Rune Rage",
+		"color": "skill",
+		"prog": "faydown"
+	},
+	{
+		"name": "Pale Nails",
+		"color": "skill",
+		"prog": "act3"
 	}
 ]
