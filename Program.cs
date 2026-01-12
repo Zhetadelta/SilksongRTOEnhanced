@@ -60,7 +60,7 @@ while (true)
 				Random rng = new Random();
 				int index = rng.Next(3);
 				tool.Name = silkNames[index];
-				progSplit[progTypes[index]].Add(tool);
+				tool.Prog = progTypes[index];
 			}
 			progSplit[tool.Prog].Add(tool);
 		}
@@ -99,7 +99,7 @@ while (true)
                     Random rng = new Random();
                     int index = rng.Next(3);
                     tool.Name = silkNames[index];
-                    progSplit[progTypes[index]].Add(tool);
+                    tool.Prog = progTypes[index];
                 }
                 progSplit[tool.Prog].Add(tool);
             }
